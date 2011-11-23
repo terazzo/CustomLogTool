@@ -65,7 +65,7 @@ public class LogQuery {
         this.query.parse(queryString);
         this.paths = paths.clone();
     }
-	/** クエリを実行する */
+    /** クエリを実行する */
     public void execute() throws QueryExecutionException {
         List<LogRecord> records = readLogs();
         this.queryResults = this.query.execute(records);
