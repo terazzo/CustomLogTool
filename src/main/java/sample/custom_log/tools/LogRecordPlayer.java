@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
@@ -91,6 +92,10 @@ public class LogRecordPlayer implements Runnable {
         }
         for (Map.Entry<String, String> headerEntry : logRecord.getHeader().entrySet()) {
             request.addHeader(headerEntry.getKey(), headerEntry.getValue());
+        }
+        String referer = logRecord.getReferer();
+        if (!StringUtils.isEmpty(referer) && !referer.equals("-")) {
+            request.addHeader("Referer", logRecord.getReferer());
         }
         // パラメータ
         HttpParams params = new BasicHttpParams();
