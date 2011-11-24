@@ -77,18 +77,11 @@ public class LogRecordPlayer implements Runnable {
                 logger.debug("  to:" + response.getLastHeader("Location"));
             }
         }
-    
     }
     // logRecordからHttpUriRequestを生成する
     private HttpUriRequest prepareRequest(LogRecord logRecord) throws URISyntaxException {
-        StringBuilder qparams = new StringBuilder();
-        for (Map.Entry<String, String> paramEntry : logRecord.getParam().entrySet()) {
-            qparams.append(paramEntry.getKey());
-            qparams.append('=');
-            qparams.append(paramEntry.getValue());
-        }
-        URI uri = URIUtils.createURI("http", settings.domain, -1, logRecord.getRequestPath(), 
-                qparams.toString(), null);
+        URI uri = URIUtils.createURI("http", settings.domain, -1, logRecord.getRequestUri(),
+                null, null);
 
         HttpUriRequest request;
         if (logRecord.getMethod().equalsIgnoreCase(HttpHead.METHOD_NAME)) {
