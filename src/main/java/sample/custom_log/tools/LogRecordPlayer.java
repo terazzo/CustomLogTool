@@ -29,14 +29,11 @@ import sample.custom_log.util.NoncancelableTask;
 public class LogRecordPlayer implements Runnable {
     private final LogRecord logRecord;
     private final LogPlayerSettings settings;
-    private final String encoding;
     private Log logger = LogFactory.getLog(LogRecordPlayer.class);
 
     public LogRecordPlayer(LogRecord logRecord, LogPlayerSettings settings) {
         this.logRecord = logRecord;
         this.settings = settings;
-        this.encoding =
-            System.getProperty(Constants.REQUEST_ENCODING_PROP_KEY, Constants.DEFAULT_ENCODING);
     }
 
     @Override
@@ -102,13 +99,10 @@ public class LogRecordPlayer implements Runnable {
         for (Map.Entry<String, String> headerEntry : logRecord.getHeader().entrySet()) {
             request.addHeader(headerEntry.getKey(), headerEntry.getValue());
         }
-        request.addHeader("Character-Encoding", encoding);
         // パラメータ
         HttpParams params = new BasicHttpParams();
         HttpProtocolParamBean paramsBean = new HttpProtocolParamBean(params);
         paramsBean.setVersion(HttpVersion.HTTP_1_1);
-//        paramsBean.setHttpElementCharset(encoding);
-//        paramsBean.setContentCharset(encoding);
         paramsBean.setUserAgent(logRecord.getUserAgent());
         params.setBooleanParameter(ClientPNames.HANDLE_REDIRECTS, false);
         request.setParams(params);
